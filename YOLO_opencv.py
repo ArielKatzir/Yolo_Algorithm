@@ -1,3 +1,7 @@
+# comments with # are comments
+# comments with '''...''' are optional code lines
+
+
 import cv2
 import numpy as np
 
@@ -9,7 +13,7 @@ net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
 # load the classes from the files
 classes = []
 with open("coco.names", "r") as f:
-    yolo_class = [line.strip() for line in f.readlines()]
+    classes = [line.strip() for line in f.readlines()]
 
 # get the names of the layers which will help us get the final object on the screen
 layers_names = net.getLayerNames()
@@ -62,10 +66,26 @@ for out in outs:
             x = int(center_x - object_width / 2)
             y = int(center_y - object_height / 2)
 
-            # draw rectangle
-            cv2.rectangle(img, (x, y), (x + object_width, y + object_height), (0, 255, 0), 1)
+            # append each box to an array with centre,w,h coordinates
+            boxes.append([x, y, object_width, object_height])
+            # append each confidence to an array
+            confidences.append(float(confidence))
+            # to know the names of the objects we detected
+            class_ids.append(class_id)
 
-            boxes.append([x,y,object_width,object_height])
+# non-max-supression is used to make sure only one object is detected per objectc present
+# (only one box is drawn per car)
+indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+
+# looping through the max confidence objects to draw a box around them
+objects_number_num = len(boxes)
+for i in range(objects_number_num):
+    if i in indexes:
+        x, y, width, height = boxes[i]
+        # names which type of object it is
+        '''label = classes[class_ids[i]]'''
+        cv2.rectangle(img, (x, y), (x + width, y + height), (0, 255, 0))
+
 
 # shows the image
 cv2.imshow("Image", img)
