@@ -20,7 +20,7 @@ layers_names = net.getLayerNames()
 output_layers = [layers_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 # creates image object
-img = cv2.imread("Ayalon1.jpeg")
+img = cv2.imread("street.jpg")
 
 # shrinks the image window
 img = cv2.resize(img, None, fx=0.4, fy=0.4)
