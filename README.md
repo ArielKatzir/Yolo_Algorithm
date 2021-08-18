@@ -11,3 +11,10 @@ From https://pjreddie.com/darknet/yolo/
 
 And the third:
 https://github.com/pjreddie/darknet/blob/master/data/coco.names
+
+
+TODO:
+
+- Make yolo detect objects that arent included in the coco_names file
+- Get it to work on a video
+- Draw confidence_score next to the bounding boxes
