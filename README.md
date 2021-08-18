@@ -1,7 +1,7 @@
 # Yolo_Algorithm
 Experimenting and exploring the use of the yolo algorithm when detecting objects. 
 
-To use the YOLO algorithm with opencv 3 files should to be downloaded:
+To use the YOLOv3 algorithm with opencv, 3 files should to be downloaded:
 
 The first 2:
 
