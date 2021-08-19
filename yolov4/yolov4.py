@@ -85,8 +85,10 @@ for i in range(len(boxes)):
         # names which type of object it is
         label = classes[class_ids[i]]
 
+        # Drawing the boundong boxes
         cv2.rectangle(img, (x, y), (x + width, y + height), (0, 255, 0))
 
+        # Adding confidence score
         cv2.putText(img,f'{int(confidences[i]*100)}%  {label}',
                   (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255), 1)
 
