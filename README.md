@@ -17,4 +17,4 @@ TODO:
 
 - Make yolo detect objects that arent included in the coco_names file
 - Get it to work on a video
-- Draw confidence_score next to the bounding boxes
+
