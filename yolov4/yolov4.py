@@ -20,12 +20,13 @@ layers_names = net.getLayerNames()
 output_layers = [layers_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 # creates image object
-img = cv2.imread("street.jpg")
+img = cv2.imread("pexels-photo-777157.jpeg")
 
 
 # shrinks the image window
 img = cv2.resize(img, None, fx=1, fy=1)
-height, width, channels = img.shape
+img_height, img_width, channels = img.shape
+
 
 # blob is way to extract the features and objects from the image
 # it will create 3 images: r g and b images which can be processes by the algorithm
@@ -43,6 +44,13 @@ class_ids = []
 confidences = []
 boxes = []
 
+def font_size(img_wh : (int)) -> (float):
+    w,h = img_wh
+    if w < 800 or h < 1000:
+        return (0.4,1.0)
+    else:
+        return (1.0,2.0)
+
 for out in outs:
     # detecting confidence
     for detection in out:
@@ -53,10 +61,10 @@ for out in outs:
         # only take high confidence values
         if confidence > 0.5:
             # get coordinates of boxes
-            center_x = int(detection[0] * width)
-            center_y = int(detection[1] * height)
-            object_width = int(detection[2] * width)
-            object_height = int(detection[3] * height)
+            center_x = int(detection[0] * img_width)
+            center_y = int(detection[1] * img_height)
+            object_width = int(detection[2] * img_width)
+            object_height = int(detection[3] * img_height)
             
             # draw a small circle in the center of each object detected
             "cv2.circle(img, (center_x, center_y), 10, (0, 255, 0), 2)"
@@ -79,18 +87,26 @@ indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
 # looping through the max confidence objects to draw a box around them
 
+confidence_font = cv2.FONT_HERSHEY_SIMPLEX
+box_colours =  np.random.uniform(0 ,255, size=(len(boxes) , 3)) 
+
+
 for i in range(len(boxes)):
     if i in indexes:
-        x, y, width, height = boxes[i]
+        x, y, box_width, box_height = boxes[i]
         # names which type of object it is
         label = classes[class_ids[i]]
 
+        colour = box_colours[i]
+
+        font_s = font_size((img_width,img_height))
+
         # Drawing the boundong boxes
-        cv2.rectangle(img, (x, y), (x + width, y + height), (0, 255, 0))
+        cv2.rectangle(img, (x, y), (x + box_width, y + box_height), colour , 2)
 
         # Adding confidence score
         cv2.putText(img,f'{int(confidences[i]*100)}%  {label}',
-                  (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255), 1)
+                  (x, y-10), confidence_font, font_s[0], (0,0,255), int(font_s[1]))
 
 
 # shows the image
