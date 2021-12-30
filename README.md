@@ -8,7 +8,7 @@ To use either version of yolo, you first must download the yolo.weights file on 
 
 sudo apt install python3-opencv
 
-If open is already installed in pip (check via the pip list command) it must be uninstalled
+If opencv is already installed in pip (check via the pip list command) it must be uninstalled
 
 
 
